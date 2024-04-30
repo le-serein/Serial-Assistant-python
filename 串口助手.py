@@ -72,7 +72,6 @@ def receive_data(receive_text):
                 show_figure(receivedata)
                 app.fig_canvas.draw()
             receive_text.config(state='disabled')
-        time.sleep(0.1)
 
 
 def text_clear():
@@ -163,7 +162,7 @@ def change_theme():
 
 def show_figure(receivedata):
     x = list(range(0, len(receivedata)))
-    plot(x, receivedata, 'o', markerfacecolor='none', markeredgecolor='blue')
+    plot(x, receivedata, '-o', color='red', markerfacecolor='none', markeredgecolor='blue')
     if len(x) != 0:
         xlim(0, len(x))
 
@@ -204,10 +203,8 @@ class Application(ttk.Frame):
         self.receive_text.config(state='disabled')
         ttk.Button(self, text='清空', command=text_clear).place(x=x + 400 - w, y=y + 155, width=w, height=h)
 
-        fig = figure(figsize=(5, 5), dpi=80)
+        fig = figure(figsize=(8, 5), dpi=60)
         self.fig_canvas = FigureCanvasTkAgg(fig, self)
-        self.fig_canvas.get_tk_widget().pack(side=TOP, expand=True, pady=0)
-        self.fig_canvas.draw()
 
         notebook.add(self.receive_text, text='接收区')
         notebook.add(self.fig_canvas.get_tk_widget(), text='波形图')
@@ -216,7 +213,7 @@ class Application(ttk.Frame):
         self.send_text = Text(self)
         self.send_text.place(x=x, y=y + h + 165, width=400, height=100)
         ttk.Button(self, text='发送', command=lambda: send_data(self.send_text)).place(
-            x=x + 400 - w, y=y + h + 270, width=w, height=h)
+                            x=x + 400 - w, y=y + h + 270, width=w, height=h)
         self.ctrl_info = Text(self)
         self.ctrl_info.place(x=x, y=y + h + 310, width=400, height=100)
         self.ctrl_info.config(state='disabled')
@@ -245,8 +242,7 @@ class Application(ttk.Frame):
 
         y = y + 40
         ttk.Label(self, text='波特率', anchor='center').place(x=x_word, y=y, width=w_word, height=30)
-        self.baud_rate_box = ttk.Combobox(self,
-                                          values=['9600', '19200', '38400', '57600', '115200'])
+        self.baud_rate_box = ttk.Combobox(self,values=['9600', '19200', '38400', '57600', '115200'])
         self.baud_rate_box.place(x=x_combo, y=y, width=w_combo, height=30)
         self.baud_rate_box.current(0)
         self.baud_rate_box.bind('<<ComboboxSelected>>', self.on_select)
